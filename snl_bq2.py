@@ -5,8 +5,10 @@ class Maze:
 
   step = 0
   matrix = [
-    [0,1,0,0],
     [0,0,0,1],
+    [0,1,1,0],
+    [0,0,1,0],
+    [1,0,0,0],
     [0,1,0,0],
   ]
   
@@ -14,20 +16,21 @@ class Maze:
   blocked = []
 
   def can_exit(self):
-    result = 'No Idea'
 
     m = len(self.matrix)
     n = len(self.matrix[0])
 
     if(self.matrix[0][0]==1):
-      result = 'false'
+      print('false')
+      return
     if(self.matrix[m-1][n-1]==1):
-      result = 'false'
+      print('false')
+      return
     
     current = [0,0]
-    result = self.look_around(current)
-    
-    return result
+    self.look_around(current)
+
+    return 
 
   def look_around(self, current):
     self.step = self.step + 1
@@ -66,23 +69,25 @@ class Maze:
     elif(top == 0):
       move = [pos_top[0],pos_top[1]]
     else:
-      return 'false'
+      print('false')
+      return
     
     if(move in self.path):
       self.blocked.append(current)
     
     print(current)
-    result = 'Prepare to finish'
     current = move
+    
     if(current[0]==m-1 and current[1] == n-1 and self.matrix[current[0]][current[1]] == 0):
       print(current)
-      result = 'true'
+      print('true')
+      return
     else:
       self.path.append(current)
       if(self.step < math.pow(m,n)):
         self.look_around(current)
 
-    return result
+    return
 
   def get_pos(self, current):
     m = len(self.matrix)
@@ -91,11 +96,10 @@ class Maze:
     x = current[0]
     y = current[1]
 
-
+    
     if(x>=0 and y>=0 and x<m and y<n and not ([x, y] in self.blocked)):
       return [x, y]
     return -1
 
 maze = Maze()
 result = maze.can_exit()
-print(result)
